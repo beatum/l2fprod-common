@@ -27,7 +27,9 @@
     </resources>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
         <executions>
           <execution>
             <phase>process-sources</phase>
@@ -103,6 +105,8 @@
       <groupId>net.sf.nachocalendar</groupId>
       <artifactId>nachocalendar</artifactId>
       <version>0.21</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../lib/nachocalendar.jar</systemPath>
     </dependency>
   </dependencies>
 </project>

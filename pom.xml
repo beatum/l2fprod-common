@@ -9,6 +9,25 @@
     provides the developer community with these missing components, components inspired from modern
     user interfaces. It provides a PropertySheet component, a collapsible task pane, a button bar, a
     font chooser, a directory chooser.</description>
+  <!-- Project properties: Java 8 and plugin versions -->
+  <properties>
+    <!-- resolve the scm developerConnection property used further down -->
+    <maven.username>guest</maven.username>
+
+    <!-- Java 8 compatibility -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <!-- explicit plugin versions -->
+    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
+    <maven.assembly.plugin.version>3.1.1</maven.assembly.plugin.version>
+    <maven.site.plugin.version>3.9.1</maven.site.plugin.version>
+    <maven.pmd.plugin.version>3.15.0</maven.pmd.plugin.version>
+    <maven.javadoc.plugin.version>3.4.1</maven.javadoc.plugin.version>
+    <maven.projectinfo.plugin.version>3.4.1</maven.projectinfo.plugin.version>
+  </properties>
   <issueManagement>
     <system>bugzilla</system>
     <url>https://l2fprod-common.dev.java.net/servlets/ProjectIssues</url>
@@ -78,8 +97,23 @@
       </extension>
     </extensions>
     <plugins>
+      <!-- Compiler plugin for Java 8 -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+
+      <!-- Source plugin to attach sources -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>${maven.source.plugin.version}</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -88,7 +122,38 @@
             </goals>
           </execution>
         </executions>
-        <inherited>true</inherited>
+      </plugin>
+
+      <!-- Assembly plugin moved into build plugins. Use <descriptors> to reference the external assembly descriptor file. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven.assembly.plugin.version}</version>
+        <configuration>
+          <descriptors>
+            <descriptor>maven/assembly-bin.xml</descriptor>
+          </descriptors>
+          <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Site plugin configuration (used when running mvn site) -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven.site.plugin.version}</version>
+        <configuration>
+          <siteDirectory>${basedir}/xdocs</siteDirectory>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -120,29 +185,29 @@
   <reporting>
     <plugins>
       <plugin>
-       <artifactId>maven-site-plugin</artifactId>
-       <configuration>
-         <siteDirectory>${basedir}/xdocs</siteDirectory>
-         <resourcesDirectory>${basedir}/xdocs/resources</resourcesDirectory>
-       </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven.site.plugin.version}</version>
       </plugin>
+
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven.projectinfo.plugin.version}</version>
       </plugin>
+
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
+        <version>${maven.pmd.plugin.version}</version>
       </plugin>
+
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.plugin.version}</version>
         <configuration>
           <quiet>true</quiet>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptor>maven/assembly-bin.xml</descriptor>
-          <finalName>l2fprod-common-${project.version}</finalName>
         </configuration>
       </plugin>
     </plugins>
