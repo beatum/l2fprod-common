@@ -17,12 +17,6 @@
  */
 package com.l2fprod.common.swing.plaf;
 
-import com.l2fprod.common.swing.plaf.aqua.AquaLookAndFeelAddons;
-import com.l2fprod.common.swing.plaf.metal.MetalLookAndFeelAddons;
-import com.l2fprod.common.swing.plaf.windows.WindowsClassicLookAndFeelAddons;
-import com.l2fprod.common.swing.plaf.windows.WindowsLookAndFeelAddons;
-import com.l2fprod.common.util.OS;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Method;
@@ -34,6 +28,12 @@ import javax.swing.JComponent;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+
+import com.l2fprod.common.swing.plaf.aqua.AquaLookAndFeelAddons;
+import com.l2fprod.common.swing.plaf.metal.MetalLookAndFeelAddons;
+import com.l2fprod.common.swing.plaf.windows.WindowsClassicLookAndFeelAddons;
+import com.l2fprod.common.swing.plaf.windows.WindowsLookAndFeelAddons;
+import com.l2fprod.common.util.OS;
 
 /**
  * Provides additional pluggable UI for new components added by the
@@ -171,6 +171,11 @@ public class LookAndFeelAddons {
   public static String getBestMatchAddonClassName() {
     String lnf = UIManager.getLookAndFeel().getClass().getName();
     String addon;
+    // FlatLaf provides its own look and feel but is Metal-like; map it
+    // to the Metal addon so the library UI defaults remain reasonable.
+    if (lnf != null && lnf.toLowerCase().contains("flatlaf")) {
+      addon = MetalLookAndFeelAddons.class.getName();
+    } else
     if (UIManager.getCrossPlatformLookAndFeelClassName().equals(lnf)) {
       addon = MetalLookAndFeelAddons.class.getName();
     } else if (UIManager.getSystemLookAndFeelClassName().equals(lnf)) {

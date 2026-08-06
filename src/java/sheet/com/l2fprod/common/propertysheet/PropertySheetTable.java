@@ -17,9 +17,6 @@
  */
 package com.l2fprod.common.propertysheet;
 
-import com.l2fprod.common.propertysheet.PropertySheetTableModel.Item;
-import com.l2fprod.common.swing.HeaderlessColumnResizer;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -41,10 +38,15 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.plaf.TableUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
+
+import com.l2fprod.common.propertysheet.PropertySheetTableModel.Item;
+import com.l2fprod.common.swing.HeaderlessColumnResizer;
+import com.l2fprod.common.swing.plaf.LookAndFeelAddons;
 
 /**
  * A table which allows the editing of Properties through
@@ -134,6 +136,16 @@ public class PropertySheetTable extends JTable {
     getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0),
       "toggle");    
     addMouseListener(new ToggleMouseHandler());
+  }
+
+  /**
+   * Ensure the correct TableUI is installed even in environments where
+   * LookAndFeel defaults may have been reinitialized (applets, classloader
+   * issues). Uses the library helper to load the UI via the expected
+   * `TableUI` classloader.
+   */
+  public void updateUI() {
+    setUI((TableUI) LookAndFeelAddons.getUI(this, TableUI.class));
   }
 
   /**
