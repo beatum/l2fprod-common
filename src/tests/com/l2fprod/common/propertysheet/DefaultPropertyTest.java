@@ -89,6 +89,9 @@ public class DefaultPropertyTest extends TestCase {
     
     dp1.setEditable(!dp1.isEditable());
     assertTrue("Test 12", !dp1.equals(clone));
+
+    PropertySheet ps = new PropertySheet();
+    assertTrue("Test 13", !dp1.equals(ps));
   }
 
   /**

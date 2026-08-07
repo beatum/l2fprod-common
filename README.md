@@ -74,24 +74,70 @@ Swing toolkit.
 
 ## Build
 
-   ```
-   ant dist
-   ```
+The project historically used Ant. The current repository contains Mavenized modules under `maven/`.
 
-## The Distribution
+Quick Maven build (recommended):
 
-In the distribution, there are several jar files, one per component
-plus one including all components. This allows developers to include
-only the classes for the components they want to use.
+```bash
+# build the whole multi-module project (skip tests)
+mvn -DskipTests=true clean package
 
-To run the demo from the distribution, use:
-   ```
-   java -jar lib\l2fprod-common-all.jar
-   ```
+# run all tests (may be slow)
+mvn clean test
+```
 
-Each jar embeds its own demo too. For example to view the JTaskPane
-demo, use:
+Build only the `sheet` module (compile or package):
 
-   ```
-   java -jar lib\l2fprod-common-tasks.jar
-   ```
+```bash
+# from project root: build the sheet module and its dependencies
+mvn -DskipTests=true -pl maven/sheet -am package
+
+# or run from the module dir:
+cd maven/sheet
+mvn -DskipTests=true package
+```
+
+Compile test classes (useful when you added test-only demos):
+
+```bash
+mvn -DskipTests=true -pl maven/sheet -am test-compile
+```
+
+Run a single module test class (example):
+
+```bash
+# run PropertyEditorRegistryUnitTest in the sheet module
+mvn -pl maven/sheet -Dtest=PropertyEditorRegistryUnitTest test
+```
+
+Run the small PropertySheet demo (the demo is in the test sources and uses test classpath):
+
+```bash
+# recommended: from project root so -pl works as expected
+mvn -DskipTests=true -pl maven/sheet -am -Dexec.classpathScope=test \
+  exec:java -Dexec.mainClass=com.l2fprod.common.demo.PropertySheetDemo
+
+# or from the module folder (do NOT pass -pl here):
+cd maven/sheet
+mvn -DskipTests=true -Dexec.classpathScope=test \
+  exec:java -Dexec.mainClass=com.l2fprod.common.demo.PropertySheetDemo
+```
+
+Notes when running the demo and tests
+- The demo prefers FlatLaf when available (it tries a few known FlatLaf class names). The repository already includes a test-scoped FlatLaf dependency in `maven/sheet/pom.xml` so running with `-Dexec.classpathScope=test` will pick it up.
+- The demo is a Swing application and requires a display. If you are running on a headless CI server, use Xvfb or similar (example):
+
+```bash
+# using xvfb-run (Debian/Ubuntu) to run GUI in a virtual X server
+xvfb-run mvn -DskipTests=true -pl maven/sheet -am -Dexec.classpathScope=test \
+  exec:java -Dexec.mainClass=com.l2fprod.common.demo.PropertySheetDemo
+```
+- If you get a Maven warning about `nachocalendar` (systemPath pointing at `${project.basedir}/../../lib/nachocalendar.jar`), either place the JAR at that location (legacy layout) or update the module POM to use a repository dependency. This is a legacy system-scope entry and may trigger warnings but does not prevent builds unless the JAR is actually required by your run.
+
+Running the FlatLaf unit test (example):
+
+```bash
+mvn -pl maven/shared -Dtest=LookAndFeelAddonsFlatLafTest test
+```
+
+If you prefer the demo in `src/main/java` (so it runs without the `-Dexec.classpathScope=test` workaround), I can move it to `maven/sheet/src/main/java` and update the pom accordingly.

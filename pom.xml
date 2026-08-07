@@ -1,216 +1,235 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.l2fprod.common</groupId>
-  <artifactId>l2fprod-common-all</artifactId>
-  <packaging>pom</packaging>
-  <name>L2FProd.com Common Components</name>
-  <version>7.4-SNAPSHOT</version>
-  <description>Swing has lot of components built-in but still some are missing. This project
-    provides the developer community with these missing components, components inspired from modern
-    user interfaces. It provides a PropertySheet component, a collapsible task pane, a button bar, a
-    font chooser, a directory chooser.</description>
-  <!-- Project properties: Java 8 and plugin versions -->
-  <properties>
-    <!-- resolve the scm developerConnection property used further down -->
-    <maven.username>guest</maven.username>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.l2fprod.common</groupId>
+    <artifactId>l2fprod-common-all</artifactId>
+    <packaging>pom</packaging>
+    <name>L2FProd.com Common Components</name>
+    <version>7.4-SNAPSHOT</version>
+    <description>Swing has lot of components built-in but still some are missing. This project
+        provides the developer community with these missing components, components inspired from modern
+        user interfaces. It provides a PropertySheet component, a collapsible task pane, a button bar, a
+        font chooser, a directory chooser.
+    </description>
+    <!-- Project properties: Java 8 and plugin versions -->
+    <properties>
+        <!-- resolve the scm developerConnection property used further down -->
+        <maven.username>guest</maven.username>
 
-    <!-- Java 8 compatibility -->
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- Java 8 compatibility -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
-    <!-- explicit plugin versions -->
-    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-    <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
-    <maven.assembly.plugin.version>3.1.1</maven.assembly.plugin.version>
-    <maven.site.plugin.version>3.9.1</maven.site.plugin.version>
-    <maven.pmd.plugin.version>3.15.0</maven.pmd.plugin.version>
-    <maven.javadoc.plugin.version>3.4.1</maven.javadoc.plugin.version>
-    <maven.projectinfo.plugin.version>3.4.1</maven.projectinfo.plugin.version>
-  </properties>
-  <issueManagement>
-    <system>bugzilla</system>
-    <url>https://l2fprod-common.dev.java.net/servlets/ProjectIssues</url>
-  </issueManagement>
-  <ciManagement>
-    <notifiers>
-      <notifier>
-        <address>l2fprod@dev.java.net</address>
-      </notifier>
-    </notifiers>
-  </ciManagement>
-  <inceptionYear>2004</inceptionYear>
-  <developers>
-    <developer>
-      <id>l2fprod</id>
-      <name>Frederic Lavigne</name>
-      <email>fred@L2FProd.com</email>
-      <url>http://www.L2FProd.com</url>
-      <organization>L2FProd.com</organization>
-      <roles>
-        <role>Project Owner</role>
-      </roles>
-    </developer>
-  </developers>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <scm>
-    <connection>scm:cvs:pserver:guest@cvs.dev.java.net:/cvs:l2fprod-common</connection>
-    <developerConnection>scm:cvs:pserver:${maven.username}@cvs.dev.java.net:/cvs:l2fprod-common</developerConnection>
-    <url>https://l2fprod-common.dev.java.net/source/browse/l2fprod-common/</url>
-  </scm>
-  <organization>
-    <name>L2FProd.com</name>
-    <url>http://common.L2FProd.com</url>
-  </organization>
-  <mailingLists>
-    <mailingList>
-      <name>Announcement List</name>
-      <subscribe>announce-subscribe@l2fprod-common.dev.java.net</subscribe>
-      <unsubscribe>announce-unsubscribe@l2fprod-common.dev.java.net</unsubscribe>
-      <archive>https://l2fprod-common.dev.java.net/servlets/SummarizeList?listName=announce</archive>
-    </mailingList>
-    <mailingList>
-      <name>Developer List</name>
-      <subscribe>dev-subscribe@l2fprod-common.dev.java.net</subscribe>
-      <unsubscribe>dev-unsubscribe@l2fprod-common.dev.java.net</unsubscribe>
-      <archive>https://l2fprod-common.dev.java.net/servlets/SummarizeList?listName=dev</archive>
-    </mailingList>
-    <mailingList>
-      <name>Users List</name>
-      <subscribe>users-subscribe@l2fprod-common.dev.java.net</subscribe>
-      <unsubscribe>users-unsubscribe@l2fprod-common.dev.java.net</unsubscribe>
-      <archive>https://l2fprod-common.dev.java.net/servlets/SummarizeList?listName=users</archive>
-    </mailingList>
-  </mailingLists>
-  <build>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ftp</artifactId>
-        <version>1.0-alpha-6</version>
-      </extension>
-    </extensions>
-    <plugins>
-      <!-- Compiler plugin for Java 8 -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.plugin.version}</version>
-        <configuration>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
-          <encoding>${project.build.sourceEncoding}</encoding>
-        </configuration>
-      </plugin>
+        <!-- explicit plugin versions -->
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
+        <maven.assembly.plugin.version>3.1.1</maven.assembly.plugin.version>
+        <maven.site.plugin.version>3.9.1</maven.site.plugin.version>
+        <maven.pmd.plugin.version>3.15.0</maven.pmd.plugin.version>
+        <maven.javadoc.plugin.version>3.4.1</maven.javadoc.plugin.version>
+        <maven.projectinfo.plugin.version>3.4.1</maven.projectinfo.plugin.version>
+    </properties>
+    <issueManagement>
+        <system>bugzilla</system>
+        <url>https://l2fprod-common.dev.java.net/servlets/ProjectIssues</url>
+    </issueManagement>
+    <ciManagement>
+        <notifiers>
+            <notifier>
+                <address>l2fprod@dev.java.net</address>
+            </notifier>
+        </notifiers>
+    </ciManagement>
+    <inceptionYear>2004</inceptionYear>
+    <developers>
+        <developer>
+            <id>l2fprod</id>
+            <name>Frederic Lavigne</name>
+            <email>fred@L2FProd.com</email>
+            <url>http://www.L2FProd.com</url>
+            <organization>L2FProd.com</organization>
+            <roles>
+                <role>Project Owner</role>
+            </roles>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:cvs:pserver:guest@cvs.dev.java.net:/cvs:l2fprod-common</connection>
+        <developerConnection>scm:cvs:pserver:${maven.username}@cvs.dev.java.net:/cvs:l2fprod-common
+        </developerConnection>
+        <url>https://l2fprod-common.dev.java.net/source/browse/l2fprod-common/</url>
+    </scm>
+    <organization>
+        <name>L2FProd.com</name>
+        <url>http://common.L2FProd.com</url>
+    </organization>
+    <mailingLists>
+        <mailingList>
+            <name>Announcement List</name>
+            <subscribe>announce-subscribe@l2fprod-common.dev.java.net</subscribe>
+            <unsubscribe>announce-unsubscribe@l2fprod-common.dev.java.net</unsubscribe>
+            <archive>https://l2fprod-common.dev.java.net/servlets/SummarizeList?listName=announce</archive>
+        </mailingList>
+        <mailingList>
+            <name>Developer List</name>
+            <subscribe>dev-subscribe@l2fprod-common.dev.java.net</subscribe>
+            <unsubscribe>dev-unsubscribe@l2fprod-common.dev.java.net</unsubscribe>
+            <archive>https://l2fprod-common.dev.java.net/servlets/SummarizeList?listName=dev</archive>
+        </mailingList>
+        <mailingList>
+            <name>Users List</name>
+            <subscribe>users-subscribe@l2fprod-common.dev.java.net</subscribe>
+            <unsubscribe>users-unsubscribe@l2fprod-common.dev.java.net</unsubscribe>
+            <archive>https://l2fprod-common.dev.java.net/servlets/SummarizeList?listName=users</archive>
+        </mailingList>
+    </mailingLists>
+    <build>
+        <!-- Using standard module layout (module sources moved to maven/*/src/main/java and resources in src/main/resources) -->
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>1.0-alpha-6</version>
+            </extension>
+        </extensions>
+        <plugins>
+            <!-- Compiler plugin for Java 8 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
 
-      <!-- Source plugin to attach sources -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>${maven.source.plugin.version}</version>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+            <!-- Surefire plugin to discover and run unit tests in src/test/java -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                        <include>**/*TestCase.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
 
-      <!-- Assembly plugin moved into build plugins. Use <descriptors> to reference the external assembly descriptor file. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>${maven.assembly.plugin.version}</version>
-        <configuration>
-          <descriptors>
-            <descriptor>maven/assembly-bin.xml</descriptor>
-          </descriptors>
-          <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+            <!-- Source plugin to attach sources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-      <!-- Site plugin configuration (used when running mvn site) -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>${maven.site.plugin.version}</version>
-        <configuration>
-          <siteDirectory>${basedir}/xdocs</siteDirectory>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  <modules>
-    <module>maven/buttonbar</module>
-    <module>maven/directorychooser</module>
-    <module>maven/fontchooser</module>
-    <module>maven/outlookbar</module>
-    <module>maven/shared</module>
-    <module>maven/sheet</module>
-    <module>maven/tasks</module>
-    <module>maven/totd</module>
-  </modules>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-  <distributionManagement>
-    <repository>
-      <id>ftp-l2fprod.com</id>
-      <url>ftp://ftp.L2FProd.com/maven2/</url>
-    </repository>
-  </distributionManagement>
+            <!-- Assembly plugin moved into build plugins. Use <descriptors> to reference the external assembly descriptor file. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven.assembly.plugin.version}</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>maven/assembly-bin.xml</descriptor>
+                    </descriptors>
+                    <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>${maven.site.plugin.version}</version>
-      </plugin>
+            <!-- Site plugin configuration (used when running mvn site) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${maven.site.plugin.version}</version>
+                <configuration>
+                    <siteDirectory>${basedir}/xdocs</siteDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <modules>
+        <module>maven/buttonbar</module>
+        <module>maven/directorychooser</module>
+        <module>maven/fontchooser</module>
+        <module>maven/outlookbar</module>
+        <module>maven/shared</module>
+        <module>maven/sheet</module>
+        <module>maven/tasks</module>
+        <module>maven/totd</module>
+        <module>maven/all</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>ftp-l2fprod.com</id>
+            <url>ftp://ftp.L2FProd.com/maven2/</url>
+        </repository>
+    </distributionManagement>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>${maven.projectinfo.plugin.version}</version>
-      </plugin>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${maven.site.plugin.version}</version>
+            </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>${maven.pmd.plugin.version}</version>
-      </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven.projectinfo.plugin.version}</version>
+            </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven.javadoc.plugin.version}</version>
-        <configuration>
-          <quiet>true</quiet>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${maven.pmd.plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.javadoc.plugin.version}</version>
+                <configuration>
+                    <quiet>true</quiet>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>

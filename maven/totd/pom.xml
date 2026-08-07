@@ -13,44 +13,8 @@
   <version>7.4-SNAPSHOT</version>
   <description>totd</description>
   <build>
-    <sourceDirectory>target/filteredsrc</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>../../src/java/totd</directory>
-        <includes>
-          <include>**/*.gif</include>
-          <include>**/*.jpg</include>
-          <include>**/*.png</include>
-          <include>**/*.properties</include>
-        </includes>
-      </resource>
-    </resources>
+    <!-- standard Maven layout: sources under src/main/java and resources under src/main/resources -->
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version>
-        <executions>
-          <execution>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <filter token="VERSION" value="${project.version}" />
-                <filter token="PROJECT.FULLNAME" value="L2FProd.com Common Components" />
-                <filter token="PROJECT.SHORTNAME" value="l2fprod-common" />
-                <filter token="YEAR" value="2005-2006" />
-                <mkdir dir="${basedir}/target/filteredsrc" />
-                <copy filtering="on" todir="${basedir}/target/filteredsrc">
-                  <fileset includes="**/*.java" dir="../../src/java/${project.name}" />
-                </copy>
-              </tasks>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
