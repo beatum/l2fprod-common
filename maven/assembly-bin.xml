@@ -202,4 +202,12 @@
 </includes>
 </fileSet>
 </fileSets>
+<dependencySets>
+  <dependencySet>
+    <outputDirectory>lib</outputDirectory>
+    <useProjectArtifact>false</useProjectArtifact>
+    <unpack>false</unpack>
+    <scope>runtime</scope>
+  </dependencySet>
+</dependencySets>
 </assembly>
