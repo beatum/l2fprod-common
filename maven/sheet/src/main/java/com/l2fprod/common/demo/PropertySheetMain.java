@@ -19,6 +19,7 @@ package com.l2fprod.common.demo;
 
 import com.l2fprod.common.swing.LookAndFeelTweaks;
 import com.l2fprod.common.util.ResourceManager;
+import com.l2fprod.common.swing.plaf.LookAndFeelAddons;
 
 import java.awt.BorderLayout;
 
@@ -49,6 +50,13 @@ public class PropertySheetMain extends JPanel {
   public static void main(String[] args) throws Exception {
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     LookAndFeelTweaks.tweak();
+    // Ensure library UI defaults are registered for the current LookAndFeel
+    try {
+      LookAndFeelAddons.setAddon(LookAndFeelAddons.getBestMatchAddonClassName());
+    } catch (Exception e) {
+      // best effort: log but continue with default UI
+      e.printStackTrace();
+    }
     
     JFrame frame = new JFrame("PropertySheet");
     frame.getContentPane().setLayout(new BorderLayout());
