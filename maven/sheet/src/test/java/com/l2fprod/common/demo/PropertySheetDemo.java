@@ -1,5 +1,7 @@
 package com.l2fprod.common.demo;
 
+import com.l2fprod.common.beans.BaseBeanInfo;
+import com.l2fprod.common.beans.editor.ComboBoxPropertyEditor;
 import com.l2fprod.common.propertysheet.PropertySheet;
 import com.l2fprod.common.propertysheet.PropertySheetPanel;
 import com.l2fprod.common.demo.BeanBinder;
@@ -7,6 +9,7 @@ import com.l2fprod.common.demo.BeanBinder;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import java.beans.BeanInfo;
 import java.awt.Color;
 import java.io.File;
 import java.util.Date;
@@ -63,9 +66,11 @@ public class PropertySheetDemo {
       bean.setColor(Color.MAGENTA);
       bean.setFile(new File("."));
       bean.setTimestamp(new Date());
+      bean.setGender("male");
 
       // bind bean to sheet
-      new BeanBinder(bean, sheet);
+      BeanInfo beanInfo = new DemoBeanBeanInfo();
+      new BeanBinder(bean, sheet, beanInfo);
 
         frame.getContentPane().add(sheet);
         frame.setSize(600, 500);
@@ -84,6 +89,7 @@ public class PropertySheetDemo {
     private Color color;
     private File file;
     private Date timestamp;
+    private String gender;
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -102,7 +108,31 @@ public class PropertySheetDemo {
 
     public Date getTimestamp() { return timestamp; }
     public void setTimestamp(Date timestamp) { this.timestamp = timestamp; }
+
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
+  }
+
+  public static class DemoBeanBeanInfo extends BaseBeanInfo {
+    public DemoBeanBeanInfo() {
+      super(DemoBean.class);
+      addProperty("name").setCategory("General");
+      addProperty("age").setCategory("General");
+      addProperty("active").setCategory("General");
+      addProperty("gender").setCategory("General").setPropertyEditorClass(GenderEditor.class);
+      addProperty("color").setCategory("Appearance");
+      addProperty("file").setCategory("Details");
+      addProperty("timestamp").setCategory("Details");
+    }
+  }
+
+  public static class GenderEditor extends ComboBoxPropertyEditor {
+    public GenderEditor() {
+      setAvailableValues(new Object[] {
+        new Value("male", "Male"),
+        new Value("female", "Female")
+      });
+    }
   }
 
 }
-
